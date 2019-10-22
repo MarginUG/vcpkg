@@ -84,13 +84,13 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		
 		if(VCPKG_TARGET_IS_OSX)
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --prefix=${OUT_PATH_RELEASE} --with-openssl=${CURRENT_INSTALLED_DIR} "CPPFLAGS=-I${CURRENT_INSTALLED_DIR}/include -framework CoreFoundation" "LDFLAGS=-L${CURRENT_INSTALLED_DIR}/lib" "LIBS=-liconv"
+			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
 			  WORKING_DIRECTORY ${SOURCE_PATH_RELEASE}
 			  LOGNAME config-${TARGET_TRIPLET}-rel
 			)
 		else()
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --prefix=${OUT_PATH_RELEASE} --with-openssl=${CURRENT_INSTALLED_DIR} "CPPFLAGS=-I${CURRENT_INSTALLED_DIR}/include" "LDFLAGS=-L${CURRENT_INSTALLED_DIR}/lib"
+			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --enable-ipv6
 			  WORKING_DIRECTORY ${SOURCE_PATH_RELEASE}
 			  LOGNAME config-${TARGET_TRIPLET}-rel
 			)
@@ -119,7 +119,8 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		
 		file(GLOB LIBS ${OUT_PATH_RELEASE}/lib/pkgconfig/*)
 		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR})
-		file(COPY ${OUT_PATH_RELEASE}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}m.a DESTINATION ${CURRENT_PACKAGES_DIR}/lib)
+		file(COPY ${OUT_PATH_RELEASE}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}m.so.1.0 DESTINATION ${CURRENT_PACKAGES_DIR}/lib)
+		file(RENAME ${CURRENT_PACKAGES_DIR}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}m.so.1.0 ${CURRENT_PACKAGES_DIR}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}m.so)
 		message(STATUS "Installing ${TARGET_TRIPLET}-rel done")
 	endif()
 
@@ -132,13 +133,13 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		file(MAKE_DIRECTORY ${OUT_PATH_DEBUG})
 		if(VCPKG_TARGET_IS_OSX)
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug --prefix=${OUT_PATH_DEBUG} --with-openssl=${CURRENT_INSTALLED_DIR}/debug "CPPFLAGS=-I${CURRENT_INSTALLED_DIR}/include -framework CoreFoundation" "LDFLAGS=-L${CURRENT_INSTALLED_DIR}/debug/lib" "LIBS=-liconv"
+			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
 			  WORKING_DIRECTORY ${SOURCE_PATH_DEBUG}
 			  LOGNAME config-${TARGET_TRIPLET}-debug
 			)
 		else()
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug --prefix=${OUT_PATH_DEBUG} --with-openssl=${CURRENT_INSTALLED_DIR}/debug "CPPFLAGS=-I${CURRENT_INSTALLED_DIR}/include" "LDFLAGS=-L${CURRENT_INSTALLED_DIR}/debug/lib"
+			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --enable-ipv6
 			  WORKING_DIRECTORY ${SOURCE_PATH_DEBUG}
 			  LOGNAME config-${TARGET_TRIPLET}-debug
 			)
@@ -164,7 +165,8 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 
 		file(GLOB LIBS ${OUT_PATH_DEBUG}/lib/pkgconfig/*)
 		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/debug)
-		file(COPY ${OUT_PATH_DEBUG}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}dm.a DESTINATION ${CURRENT_PACKAGES_DIR}/debug/lib)
+		file(COPY ${OUT_PATH_DEBUG}/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}dm.so.1.0 DESTINATION ${CURRENT_PACKAGES_DIR}/debug/lib)
+		file(RENAME ${CURRENT_PACKAGES_DIR}/debug/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}dm.so.1.0 ${CURRENT_PACKAGES_DIR}/debug/lib/libpython${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}dm.so)
 		message(STATUS "Installing ${TARGET_TRIPLET}-dbg done")
 	endif()
 	
