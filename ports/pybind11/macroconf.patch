@@ -1,0 +1,63 @@
+diff --git a/include/pybind11/detail/common.h b/include/pybind11/detail/common.h
+index bec8ccf..162d6a1 100644
+--- a/include/pybind11/detail/common.h
++++ b/include/pybind11/detail/common.h
+@@ -30,18 +30,20 @@
+ #if !(defined(_MSC_VER) && __cplusplus == 199711L) && !defined(__INTEL_COMPILER)
+ #  if __cplusplus >= 201402L
+ #    define PYBIND11_CPP14
+-#    if __cplusplus >= 201703L
+-#      define PYBIND11_CPP17
+-#    endif
++/// Force CPP 14
++// #    if __cplusplus >= 201703L
++// #      define PYBIND11_CPP17
++// #    endif
+ #  endif
+ #elif defined(_MSC_VER) && __cplusplus == 199711L
+ // MSVC sets _MSVC_LANG rather than __cplusplus (supposedly until the standard is fully implemented)
+ // Unless you use the /Zc:__cplusplus flag on Visual Studio 2017 15.7 Preview 3 or newer
+ #  if _MSVC_LANG >= 201402L
+ #    define PYBIND11_CPP14
+-#    if _MSVC_LANG > 201402L && _MSC_VER >= 1910
+-#      define PYBIND11_CPP17
+-#    endif
++/// Force CPP 14
++// #    if _MSVC_LANG > 201402L && _MSC_VER >= 1910
++// #      define PYBIND11_CPP17
++// #    endif
+ #  endif
+ #endif
+ 
+@@ -103,10 +105,11 @@
+ #  endif
+ #  pragma warning(push)
+ #  pragma warning(disable: 4510 4610 4512 4005)
+-#  if defined(_DEBUG)
+-#    define PYBIND11_DEBUG_MARKER
+-#    undef _DEBUG
+-#  endif
++/// Thoren Huppke: We take this out because it forces the binary to be linked against the python release lib in debug mode
++// #  if defined(_DEBUG)
++// #    define PYBIND11_DEBUG_MARKER
++// #    undef _DEBUG
++// #  endif
+ #endif
+ 
+ #include <Python.h>
+@@ -128,10 +131,11 @@
+ #endif
+ 
+ #if defined(_MSC_VER)
+-#  if defined(PYBIND11_DEBUG_MARKER)
+-#    define _DEBUG
+-#    undef PYBIND11_DEBUG_MARKER
+-#  endif
++/// Thoren Huppke: We take this out because it forces the binary to be linked against the python release lib in debug mode
++// #  if defined(PYBIND11_DEBUG_MARKER)
++// #    define _DEBUG
++// #    undef PYBIND11_DEBUG_MARKER
++// #  endif
+ #  pragma warning(pop)
+ #endif
+ 
