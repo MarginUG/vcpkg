@@ -8,8 +8,7 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         ${CMAKE_CURRENT_LIST_DIR}/adaptions.patch
-        ${CMAKE_CURRENT_LIST_DIR}/aliastemplates.patch
-        ${CMAKE_CURRENT_LIST_DIR}/cpp14.patch
+        ${CMAKE_CURRENT_LIST_DIR}/macroconf.patch
 )
 
 vcpkg_find_acquire_program(PYTHON3)
