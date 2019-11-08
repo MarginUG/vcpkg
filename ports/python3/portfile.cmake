@@ -84,13 +84,13 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		
 		if(VCPKG_TARGET_IS_OSX)
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
+			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --with-openssl=${CURRENT_INSTALLED_DIR} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
 			  WORKING_DIRECTORY ${SOURCE_PATH_RELEASE}
 			  LOGNAME config-${TARGET_TRIPLET}-rel
 			)
 		else()
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --enable-ipv6
+			  COMMAND "${SOURCE_PATH_RELEASE}/configure" --enable-shared --prefix=${OUT_PATH_RELEASE} --with-openssl=${CURRENT_INSTALLED_DIR} --enable-ipv6
 			  WORKING_DIRECTORY ${SOURCE_PATH_RELEASE}
 			  LOGNAME config-${TARGET_TRIPLET}-rel
 			)
@@ -115,7 +115,7 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		file(COPY ${HEADERS} DESTINATION ${CURRENT_PACKAGES_DIR}/include)
 		
 		file(GLOB LIBS ${OUT_PATH_RELEASE}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/*)
-		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/Lib)
+		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/Lib PATTERN "__pycache__" EXCLUDE)
 		
 		file(GLOB LIBS ${OUT_PATH_RELEASE}/lib/pkgconfig/*)
 		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR})
@@ -136,13 +136,13 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		file(MAKE_DIRECTORY ${OUT_PATH_DEBUG})
 		if(VCPKG_TARGET_IS_OSX)
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
+			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --with-openssl=${CURRENT_INSTALLED_DIR} --enable-ipv6 "CPPFLAGS=-framework CoreFoundation" "LIBS=-liconv"
 			  WORKING_DIRECTORY ${SOURCE_PATH_DEBUG}
 			  LOGNAME config-${TARGET_TRIPLET}-debug
 			)
 		else()
 			vcpkg_execute_build_process(
-			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --enable-ipv6
+			  COMMAND "${SOURCE_PATH_DEBUG}/configure" --with-pydebug  --enable-shared --prefix=${OUT_PATH_DEBUG} --with-openssl=${CURRENT_INSTALLED_DIR} --enable-ipv6
 			  WORKING_DIRECTORY ${SOURCE_PATH_DEBUG}
 			  LOGNAME config-${TARGET_TRIPLET}-debug
 			)
@@ -164,7 +164,7 @@ elseif (VCPKG_TARGET_IS_LINUX OR VCPKG_TARGET_IS_OSX)
 		)
 
 		file(GLOB LIBS ${OUT_PATH_DEBUG}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/*)
-		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/debug/Lib)
+		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/debug/Lib PATTERN "__pycache__" EXCLUDE)
 
 		file(GLOB LIBS ${OUT_PATH_DEBUG}/lib/pkgconfig/*)
 		file(COPY ${LIBS} DESTINATION ${CURRENT_PACKAGES_DIR}/share/python${PYTHON_VERSION_MAJOR}/debug)
