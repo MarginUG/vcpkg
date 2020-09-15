@@ -1,10 +1,32 @@
 #include "pch.h"
 
-#include <vcpkg/base/hash.h>
 #include <vcpkg/base/system.print.h>
 
 #include <vcpkg/build.h>
+#include <vcpkg/commands.autocomplete.h>
+#include <vcpkg/commands.buildexternal.h>
+#include <vcpkg/commands.cache.h>
+#include <vcpkg/commands.ci.h>
+#include <vcpkg/commands.ciclean.h>
+#include <vcpkg/commands.contact.h>
+#include <vcpkg/commands.create.h>
+#include <vcpkg/commands.dependinfo.h>
+#include <vcpkg/commands.edit.h>
+#include <vcpkg/commands.env.h>
+#include <vcpkg/commands.fetch.h>
+#include <vcpkg/commands.format-manifest.h>
 #include <vcpkg/commands.h>
+#include <vcpkg/commands.hash.h>
+#include <vcpkg/commands.integrate.h>
+#include <vcpkg/commands.list.h>
+#include <vcpkg/commands.owns.h>
+#include <vcpkg/commands.porthistory.h>
+#include <vcpkg/commands.portsdiff.h>
+#include <vcpkg/commands.search.h>
+#include <vcpkg/commands.setinstalled.h>
+#include <vcpkg/commands.upgrade.h>
+#include <vcpkg/commands.version.h>
+#include <vcpkg/commands.xvsinstances.h>
 #include <vcpkg/export.h>
 #include <vcpkg/help.h>
 #include <vcpkg/install.h>
@@ -17,6 +39,7 @@ namespace vcpkg::Commands
     {
         static std::vector<PackageNameAndFunction<CommandTypeA>> t = {
             {"install", &Install::perform_and_exit},
+            {"x-set-installed", &SetInstalled::perform_and_exit},
             {"ci", &CI::perform_and_exit},
             {"remove", &Remove::perform_and_exit},
             {"upgrade", &Upgrade::perform_and_exit},
@@ -41,14 +64,15 @@ namespace vcpkg::Commands
             {"update", &Update::perform_and_exit},
             {"edit", &Edit::perform_and_exit},
             {"create", &Create::perform_and_exit},
-            {"import", &Import::perform_and_exit},
             {"cache", &Cache::perform_and_exit},
             {"portsdiff", &PortsDiff::perform_and_exit},
             {"autocomplete", &Autocomplete::perform_and_exit},
             {"hash", &Hash::perform_and_exit},
             {"fetch", &Fetch::perform_and_exit},
+            {"x-ci-clean", &CIClean::perform_and_exit},
             {"x-history", &PortHistory::perform_and_exit},
             {"x-vsinstances", &X_VSInstances::perform_and_exit},
+            {"x-format-manifest", &FormatManifest::perform_and_exit},
         };
         return t;
     }
@@ -60,56 +84,5 @@ namespace vcpkg::Commands
             {"contact", &Contact::perform_and_exit},
         };
         return t;
-    }
-}
-
-namespace vcpkg::Commands::Fetch
-{
-    const CommandStructure COMMAND_STRUCTURE = {
-        Strings::format("The argument should be tool name\n%s", Help::create_example_string("fetch cmake")),
-        1,
-        1,
-        {},
-        nullptr,
-    };
-
-    void perform_and_exit(const VcpkgCmdArguments& args, const VcpkgPaths& paths)
-    {
-        Util::unused(args.parse_arguments(COMMAND_STRUCTURE));
-
-        const std::string tool = args.command_arguments[0];
-        const fs::path tool_path = paths.get_tool_exe(tool);
-        System::print2(tool_path.u8string(), '\n');
-        Checks::exit_success(VCPKG_LINE_INFO);
-    }
-}
-
-namespace vcpkg::Commands::Hash
-{
-    const CommandStructure COMMAND_STRUCTURE = {
-        Strings::format("The argument should be a file path\n%s",
-                        Help::create_example_string("hash boost_1_62_0.tar.bz2")),
-        1,
-        2,
-        {},
-        nullptr,
-    };
-
-    void perform_and_exit(const VcpkgCmdArguments& args, const VcpkgPaths& paths)
-    {
-        Util::unused(args.parse_arguments(COMMAND_STRUCTURE));
-
-        const fs::path file_to_hash = args.command_arguments[0];
-
-        auto algorithm = vcpkg::Hash::Algorithm::Sha512;
-        if (args.command_arguments.size() == 2)
-        {
-            algorithm = vcpkg::Hash::algorithm_from_string(args.command_arguments[1]).value_or_exit(VCPKG_LINE_INFO);
-        }
-
-        const std::string hash =
-            vcpkg::Hash::get_file_hash(VCPKG_LINE_INFO, paths.get_filesystem(), file_to_hash, algorithm);
-        System::print2(hash, '\n');
-        Checks::exit_success(VCPKG_LINE_INFO);
     }
 }
