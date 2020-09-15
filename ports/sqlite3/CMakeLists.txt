@@ -3,7 +3,7 @@ project(sqlite3 C)
 
 include_directories(.)
 if(BUILD_SHARED_LIBS)
-    if(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    if(UNIX)
         set(API "-DSQLITE_API=__attribute__((visibility(\"default\")))")
     elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
         set(API "-DSQLITE_API=__declspec(dllexport)")
@@ -23,7 +23,6 @@ target_compile_definitions(
         -DSQLITE_ENABLE_RTREE
         -DSQLITE_ENABLE_UNLOCK_NOTIFY
         -DSQLITE_ENABLE_COLUMN_METADATA
-        -DSQLITE_ENABLE_MEMORY_MANAGEMENT
 )
 target_include_directories(sqlite3 INTERFACE $<INSTALL_INTERFACE:include>)
 if(NOT WIN32)
