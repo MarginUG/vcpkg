@@ -1,15 +1,14 @@
 include(vcpkg_common_functions)
 
-# vcpkg_from_github(
-#     OUT_SOURCE_PATH SOURCE_PATH
-#     REPO nash-io/openlimits-cpp
-#     REF 3b638e67150783303aebf1fc0789d6c44a026b53
-#     SHA512 743ff74448c1ac31d1d03c90aa50cd6119b9e1723e618d0ca1f6021ec8a5282b34e1fc13b8577d7cf9eee064b6d9f809b0c92fdc09581c96dfd69cf7b7805223
-#     HEAD_REF master
-# )
+vcpkg_from_github(
+    OUT_SOURCE_PATH SOURCE_PATH
+    REPO MarginUG/openlimits-cpp
+    HEAD_REF master
+    AUTHORIZATION_TOKEN 71c2bf9129abcbc53b435021b322eaffed435b87
+)
 
-set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
-# Use openlimit-cpp's own build process, skipping examples and tests
+# set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
+# Use openlimit-cpp's own build process
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
