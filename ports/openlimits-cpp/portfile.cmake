@@ -1,10 +1,9 @@
 include(vcpkg_common_functions)
 
-vcpkg_from_github(
+vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO MarginUG/openlimits-cpp
-    HEAD_REF master
-    AUTHORIZATION_TOKEN 71c2bf9129abcbc53b435021b322eaffed435b87
+    URL https://github.com/MarginUG/openlimits-cpp
+    REF 3f1237660003a93a05139a93b661bdae3dc4a1ef
 )
 
 # set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
