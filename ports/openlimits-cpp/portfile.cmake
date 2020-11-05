@@ -1,9 +1,17 @@
-include(vcpkg_common_functions)
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+
+SET(VCPKG_POLICY_ONLY_RELEASE_CRT enabled)
+set(VCPKG_POLICY_SKIP_ARCHITECTURE_CHECK enabled)
+
+# This is a workaround to get our rustup installation into the build environment
+find_program(RUST_COMPILER rustc PATHS $ENV{HOME}/.cargo/bin)
+get_filename_component(RUST_TOOLCHAIN ${RUST_COMPILER} DIRECTORY)
+vcpkg_add_to_path(${RUST_TOOLCHAIN})
 
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL https://github.com/MarginUG/openlimits-cpp.git
-    REF 93e47e4ddbc12bd79215b27638b8b38bf9c92591
+    REF 86788d1225d70ae6bb3c33a77d1ea6f1cf53fe5a
 )
 
 # set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
