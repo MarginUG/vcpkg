@@ -3,7 +3,7 @@ include(vcpkg_common_functions)
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL https://github.com/MarginUG/openlimits-cpp.git
-    REF b0e68764259b2ffa61b8df196c175f1ae1d4623e
+    REF 93e47e4ddbc12bd79215b27638b8b38bf9c92591
 )
 
 # set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
