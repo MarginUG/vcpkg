@@ -11,7 +11,7 @@ vcpkg_add_to_path(${RUST_TOOLCHAIN})
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL https://github.com/MarginUG/openlimits-cpp.git
-    REF 5b6956a3a09b67c45db2893276b7edeec6f55d2d
+    REF 576639414162a1b7c655cad9a6c621c48d838c3e
 )
 # set(SOURCE_PATH "/home/marvin/sources/openlimits-cpp")
 # Use openlimit-cpp's own build process
