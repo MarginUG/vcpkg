@@ -1,0 +1,4 @@
+Source: backward-cpp
+Version: 1.5
+Homepage: https://github.com/bombela/backward-cpp
+Description: Backward is a beautiful stack trace pretty printer for C++
